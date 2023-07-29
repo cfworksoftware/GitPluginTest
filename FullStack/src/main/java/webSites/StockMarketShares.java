@@ -122,6 +122,13 @@ public class StockMarketShares {
 		return retrievedData;
 	}*/
 	
+	
+		public void gitMessage() {
+		System.out.println("Hello Git, from branch bug#1234 !!");
+		}
+	
+	
+	
 	public void storeStockPrice(String dailyValue) {
 		System.out.println("Value: "+ dailyValue);
 	}
