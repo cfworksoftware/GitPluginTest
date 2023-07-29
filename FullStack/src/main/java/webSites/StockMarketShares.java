@@ -125,6 +125,7 @@ public class StockMarketShares {
 	
 		public void gitMessage() {
 		System.out.println("Hello Git, from branch bug#1234 !!");
+			//change for fetch operation
 		}
 	
 	
