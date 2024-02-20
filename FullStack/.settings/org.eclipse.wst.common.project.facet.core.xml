@@ -3,6 +3,6 @@
   <runtime name="Payara"/>
   <fixed facet="java"/>
   <fixed facet="jst.utility"/>
-  <installed facet="java" version="1.8"/>
   <installed facet="jst.utility" version="1.0"/>
+  <installed facet="java" version="19"/>
 </faceted-project>

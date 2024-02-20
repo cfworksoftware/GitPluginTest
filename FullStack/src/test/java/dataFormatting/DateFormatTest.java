@@ -30,7 +30,7 @@ class DateFormatTest {
 	}
 
 	@Test
-	void test() {
+	void dateFormatTest() {
 		
 		String dateString ="2023 Jul 5";
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy MMM d");
@@ -39,4 +39,11 @@ class DateFormatTest {
 		System.out.println("Formatted Date:"+ date.toString());
 	}
 
+	@Test
+	void systemClockDateTest() {
+	LocalDate dateNow = LocalDate.now();
+	System.out.println("Formatted Date:"+ dateNow.toString());
+	// '2024-02-10 15:02:28'
+	}
+	
 }

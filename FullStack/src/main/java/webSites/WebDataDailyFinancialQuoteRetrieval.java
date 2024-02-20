@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -20,9 +22,12 @@ import webDriverSelenium.ConfigureSeleniumBrowserDriver;
 public class WebDataDailyFinancialQuoteRetrieval {
 
 //	static String xeURL = "https://www.xe.com/";
-	static String sharePriceQuoteCSSSelectorPath = "h2.intraday__price > bg-quote";
+//	static String sharePriceQuoteCSSSelectorPath = "h2.intraday__price > bg-quote";
 	static String missingData = "XX";
-	String[] retrievedWebData = new String[4];
+//	String[] retrievedWebData = new String[4];
+	String[] rlumWebData = new String[4];
+	HashMap<String, List<String>> retrievedWebData = new HashMap<String, List<String>>();
+	
 	WebDriver webDriver = null;
 	ConfigureSeleniumBrowserDriver newBrowserDriver = new ConfigureSeleniumBrowserDriver();
 
@@ -34,23 +39,26 @@ public class WebDataDailyFinancialQuoteRetrieval {
 		}
 	}
 
-	public String[] getWebShareData(InvestmentWebsitesEnum shareName) {
+	public HashMap<String, List<String>> /*String[]*/ getWebShareData(InvestmentWebsitesEnum shareName) {
 		if (webDriver !=null) {
-			newBrowserDriver.setDriverURL(shareName.getWebURL());
+			newBrowserDriver.setDriverURL(shareName.getShareURL());
 			WebDataMarketWatchShareQuotation webShareData = new WebDataMarketWatchShareQuotation();
-			retrievedWebData = webShareData.getFinancialWebsiteShareQuote(webDriver, sharePriceQuoteCSSSelectorPath, shareName.getShareName());
+			retrievedWebData = webShareData.getFinancialWebsiteShareQuote(webDriver, InvestmentWebsiteCSSSelectorEnum.SHAREPRICEQUOTE.getCSSSelector() /*sharePriceQuoteCSSSelectorPath*/, shareName.getShareName());
 			newBrowserDriver.quitDriverInstance();
 			webDriver = null;
 		}
 		return retrievedWebData;
 	}
 
-	public String[] getWebCurrencyData(CurrencyWebsiteEnum websiteName, String fromCurrencyCode, String toCurrencyCode) {	
+	public HashMap<String, List<String>> /*String[]*/ getWebCurrencyData(CurrencyWebsiteEnum websiteName, String fromCurrencyCode, String toCurrencyCode) {	
 		String databaseFromCurrencyText = missingData;
 		String databaseToCurrencyText = missingData;
 		String exchangeRateQuote = missingData;
 		String currencyQuoteDate = missingData;
 		String displayedToCurrencySelectionContent = missingData;
+		
+	//	HashMap<String, String> retrievedCurrencyData = new HashMap<String, String>();
+				
 		if (webDriver !=null) {
 			newBrowserDriver.setDriverURL(websiteName.getWebURL());
 			clickCSSElementByText("button", "Accept");		
@@ -63,9 +71,17 @@ public class WebDataDailyFinancialQuoteRetrieval {
 			int cnt =0;
 			do {
 				cnt++;
-				findElementByCSSSelector("input#midmarketFromCurrency").click();
-				findElementByCSSSelector("input#midmarketFromCurrency").sendKeys(fromCurrencyCode);		
-				findElementByCSSSelector("input#midmarketFromCurrency").sendKeys(Keys.ENTER);
+		//		findElementByCSSSelector("button[aria-describedby='midmarketFromCurrency-descriptiveText']").click();		
+				findElementByCSSSelector("div#midmarketFromCurrency").click();	
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+				findElementByCSSSelector("input[aria-describedby='midmarketFromCurrency-current-selection']").sendKeys(fromCurrencyCode);	
+				
+				findElementByCSSSelector("input[aria-describedby='midmarketFromCurrency-current-selection']").sendKeys(Keys.ENTER);
 //			System.out.println("counter: "+cnt+"element text: "+ webDriver.findElement(By.cssSelector("div#midmarketFromCurrency-descriptiveText")).getText().toString());
 			} 
 			while ((!webDriver.findElement(By.cssSelector("div#midmarketFromCurrency-descriptiveText")).getText().contains("British Pound"))||(cnt==5));
@@ -73,9 +89,9 @@ public class WebDataDailyFinancialQuoteRetrieval {
 			cnt=0;
 			do {
 				cnt++;
-				findElementByCSSSelector("input#midmarketToCurrency").click();
-				findElementByCSSSelector("input#midmarketToCurrency").sendKeys(toCurrencyCode);
-				findElementByCSSSelector("input#midmarketToCurrency").sendKeys(Keys.ENTER);
+				findElementByCSSSelector("div#midmarketToCurrency").click();
+				findElementByCSSSelector("input[aria-describedby='midmarketToCurrency-current-selection']").sendKeys(toCurrencyCode);
+				findElementByCSSSelector("input[aria-describedby='midmarketToCurrency-current-selection']").sendKeys(Keys.ENTER);
 			} 
 			while ((!findElementByCSSSelector("div#midmarketToCurrency-descriptiveText").getText().contains(displayedToCurrencySelectionContent))||(cnt==5));
 			clickCSSElementByText("button", "Convert");				
@@ -85,6 +101,8 @@ public class WebDataDailyFinancialQuoteRetrieval {
 			WebElement t= p.findElement(By.xpath("parent::*"));
 //			System.out.println(t.getText());
 			exchangeRateQuote=t.getText().toString().replaceAll("[^0-9.]", "");  
+			retrievedWebData.put("conversion_rate",addRetrievedWebDatatoList("conversion_rate",exchangeRateQuote));
+//			retrievedWebData.put("conversion_rate",exchangeRateQuote);
 
 			String fromCurrencyText = findElementByCSSSelector("p[class^='result__ConvertedText']").getText();
 //			System.out.println("From Currency:" + fromCurrencyText);
@@ -95,15 +113,21 @@ public class WebDataDailyFinancialQuoteRetrieval {
 			if  (fromCurrencyCode.equals("GBP")) {
 				assertTrue(fromCurrencyText.contains("British Pound"),()->"British Pound");	
 				databaseFromCurrencyText ="GBP";
+				retrievedWebData.put("currency_from_gbp",addRetrievedWebDatatoList("currency_from_gbp",databaseFromCurrencyText));
+			//	retrievedWebData.put("currency_from_gbp",databaseFromCurrencyText);
 			}
 			
 			if  (toCurrencyCode.equals("EUR")) {
 				assertTrue(toCurrencyText.contains("EUR"),()->"Euros");	
-				databaseToCurrencyText = "Euros";			
+				databaseToCurrencyText = "Euros";
+				retrievedWebData.put("currency_to_eur",addRetrievedWebDatatoList("currency_to_eur",databaseToCurrencyText));
+			//	retrievedWebData.put("currency_to_eur",databaseToCurrencyText);
 			}
 			if  (toCurrencyCode.equals("USD")) {
 				assertTrue(toCurrencyText.contains("USD"),()->"US Dollars");
 				databaseToCurrencyText = "US Dollars";
+				retrievedWebData.put("currency_to_usd",addRetrievedWebDatatoList("currency_to_usd",databaseToCurrencyText));
+			//	retrievedWebData.put("currency_to_usd",databaseToCurrencyText);
 			}
 		String update[] = findElementByCSSSelector("div[class^='result__LiveSubText']").getText().split("Last updated");
 //		String update[] = webDriver.findElement(By.cssSelector("div[class^='result__LiveSubText']")).getText().split("Last updated");
@@ -114,20 +138,44 @@ public class WebDataDailyFinancialQuoteRetrieval {
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy MMM dd");
 		LocalDate date = LocalDate.parse(dateString, format);		
 		currencyQuoteDate = date.toString();
+		retrievedWebData.put("quote_date",addRetrievedWebDatatoList("quote_date",currencyQuoteDate));
+	//	retrievedWebData.put("quote_date",currencyQuoteDate);
 //		System.out.println("Formatted Date:"+ date.toString());
+		
+		/*		
+		retrievedWebData[0] = sharePriceQuote;
+		retrievedWebData[1] = shareQuoteDate;
+		retrievedWebData[2] = marketStatus;
+		retrievedWebData[3] = shareCurrency;	
+	*/	
+		
+	//	"quote_date","conversion_rate","currency_from_gbp","currency_to_eur"
+	//	"quote_date","conversion_rate","currency_from_gbp","currency_to_usd"
+	/*	
 		retrievedWebData[0] = currencyQuoteDate;
 		retrievedWebData[1] = exchangeRateQuote;
 		retrievedWebData[2] = databaseFromCurrencyText;
 		retrievedWebData[3] = databaseToCurrencyText;
+		*/
 		newBrowserDriver.quitDriverInstance();
 		webDriver = null;
 		}	
 		return retrievedWebData;
+//		return retrievedWebData;
 	}
 	
-	public String[] getWebRLUMData(InvestmentWebsitesEnum shareName) {
+	private List<String> addRetrievedWebDatatoList(String dataFieldName,String dataFieldValue)
+	{
+		List<String> data = new ArrayList<String>();
+		data.add(dataFieldName);
+		data.add(dataFieldValue);
+		return data;
+	}
+	
+	public HashMap<String, List<String>> /*String[]*/ getWebRLUMData(InvestmentWebsitesEnum shareName) 
+	{
 		if (webDriver !=null) {
-			newBrowserDriver.setDriverURL(shareName.getWebURL());
+			newBrowserDriver.setDriverURL(shareName.getShareURL());
 			WebDriver driver = newBrowserDriver.getChromeDriver();
 			new WebDriverWait(webDriver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("button#onetrust-accept-btn-handler")));
 			findElementByCSSSelector("button#onetrust-accept-btn-handler").click();
@@ -144,20 +192,29 @@ public class WebDataDailyFinancialQuoteRetrieval {
 				System.out.println("List item " + cnt++ +" :"+ row.getText());
 			} */
 //			int cnt =0;
-			for (WebElement row : rows) {
+			for (WebElement row : rows) 
+			{
 //				System.out.println("List item " + cnt++ +" :"+ row.getText());
 				if ((row.getText()).contains("Royal London UK Income With Growth Trust Inc")) {
 			    	fundRow = row;
 			        break;	
 				}
 			}
-			if (fundRow!=null) {
-			List<WebElement>  columns = fundRow.findElements(By.cssSelector("td[class='pdfableColumn']")); // if use td.pdfableColumn returns all classes with that text in it
-			int colcnt =0;
-			for (WebElement column : columns) {	
-//				System.out.println("List column " + colcnt +" :"+ column.getText());
-				retrievedWebData[colcnt++] = column.getText();
-			}
+			if (fundRow!=null) 
+			{
+				List<WebElement>  columns = fundRow.findElements(By.cssSelector("td[class='pdfableColumn']")); // if use td.pdfableColumn returns all classes with that text in it
+				int colcnt =0;
+				for (WebElement column : columns) 
+				{	
+	//				System.out.println("List column " + colcnt +" :"+ column.getText());
+	//				retrievedWebData[colcnt++] = column.getText().toString();
+					rlumWebData[colcnt++] = column.getText().toString();
+				}
+				
+				retrievedWebData.put("unit_price",addRetrievedWebDatatoList("unit_price",rlumWebData[0]));
+				retrievedWebData.put("quote_date",addRetrievedWebDatatoList("quote_date",rlumWebData[1]));
+				retrievedWebData.put("stock_exchange",addRetrievedWebDatatoList("stock_exchange",rlumWebData[2]));
+	//			retrievedWebData.put("currency_unit",addRetrievedWebDatatoList("currency_unit",shareCurrency));
 			}
 			newBrowserDriver.quitDriverInstance();	
 		}

@@ -14,6 +14,7 @@ public class ConfigureSeleniumBrowserDriver {
 
 	private String driverBrowserType = "webdriver.chrome.driver";
 	private String driverLocation = "C:\\Users\\colinf\\Documents\\SoftwareProgramming\\ANewMaterial\\Selenium\\chromedriver_win32\\chromedriver.exe";
+//	private String driverLocation = "C:\\Users\\colinf\\Documents\\SoftwareProgramming\\ANewMaterial\\Selenium\\chromedriver_win64\\chromedriver.exe";
 	private WebDriver driver = null;
 	
 	public ConfigureSeleniumBrowserDriver() {

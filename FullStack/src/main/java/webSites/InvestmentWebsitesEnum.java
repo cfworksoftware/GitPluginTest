@@ -9,13 +9,13 @@ public enum InvestmentWebsitesEnum {
 	
     private final Integer key;
     private final String shareName;
-    private final String webURL;
+    private final String shareURL;
     private final String currencySymbol;
     
     InvestmentWebsitesEnum(Integer key, String shareName, String webURL, String currencySymbol) {
         this.key = key;
         this.shareName = shareName;
-        this.webURL = webURL;
+        this.shareURL = webURL;
         this.currencySymbol = currencySymbol;
     }
 
@@ -26,8 +26,8 @@ public enum InvestmentWebsitesEnum {
         return shareName;
     }
 	
-    public String getWebURL() {
-        return webURL;
+    public String getShareURL() {
+        return shareURL;
     }
     
     public String getCurrency() {

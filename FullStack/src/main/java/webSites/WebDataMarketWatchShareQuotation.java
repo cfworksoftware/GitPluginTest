@@ -1,68 +1,99 @@
 package webSites;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-// import webDriverSelenium.ConfigureSeleniumBrowserDriver;
+
 import dataFileConnection.WriteToFile;
+
 
 public class WebDataMarketWatchShareQuotation {
 
-	static String shareQuoteDateTimeCSSSelectorPath =  "div.intraday__timestamp > span.timestamp__time";
-	static String currencyCSSSelectorPath = "h2.intraday__price > sup.character";
-	static String marketClosedCSSSelectorPath = "h2.intraday__price > span.value";
-	static String marketAfterHoursCSSSelectorPath = "h2.intraday__price > bg-quote[session = 'after']";
+//	static String shareQuoteDateTimeCSSSelectorPath =  "div.intraday__timestamp > span.timestamp__time";
+//	static String currencyCSSSelectorPath = "h2.intraday__price > sup.character";
+//	static String marketClosedCSSSelectorPath = "h2.intraday__price > span.value";
+//	not used static String marketAfterHoursCSSSelectorPath = "h2.intraday__price > bg-quote[session = 'after']";
+//	static String marketAfterHoursCSSSelectorPath = "h2.intraday__price > bg-quote.value";
 	static String missingData = "XX";
 	static String dataStorageFileNameType = "StockPriceData.txt";
 	
 	WebDriver driver;
 	
-	public String[] getFinancialWebsiteShareQuote(WebDriver driver, String sharekPriceQuoteCSSSelectorPath, String shareName) {
-		String[] retrievedShareData = new String[4];
+	public HashMap<String, List<String>> /*String[]*/ getFinancialWebsiteShareQuote(WebDriver driver, String sharePriceQuoteCSSSelectorPath, String shareName) {
+		HashMap<String, List<String>> databaseFields = new HashMap<String, List<String>>();
+//		String[] retrievedShareData = new String[4];
 		if (driver !=null) {
-			retrievedShareData = findShareNameElementTextByCSSSelector(driver, sharekPriceQuoteCSSSelectorPath, shareName);
+			databaseFields /*retrievedShareData*/ = findShareNameElementTextByCSSSelector(driver, sharePriceQuoteCSSSelectorPath, shareName);
 		}
-		return retrievedShareData;
+		return databaseFields /*retrievedShareData*/;
 	}
 	
-	
-	private String[] findShareNameElementTextByCSSSelector(WebDriver driver, String cssPath, String shareName) {
+	private /*String[]*/ HashMap<String, List<String>> findShareNameElementTextByCSSSelector(WebDriver driver, String cssPath, String shareName) {
 		String sharePriceQuote = missingData;
 		String shareCurrency = missingData;
 		String shareQuoteDate = missingData;
 		String marketStatus = missingData;
-		String[] retrievedData = new String [4];
+		HashMap<String, List<String>> retrievedWebData = new HashMap<String, List<String>>();
+		//String[] retrievedWebData = new String [4];
 		this.driver = driver;
 
-		if (cssPath.contains("h2.intraday__price")){
-			if (webElementPresent(marketAfterHoursCSSSelectorPath)) {
-				sharePriceQuote = getWebElementText(marketAfterHoursCSSSelectorPath);
-				marketStatus = "After hours";
-			}
-			else if (webElementPresent(cssPath)) {
+		if (cssPath.contains(InvestmentWebsiteCSSSelectorEnum.INTRADAYCSSTAG.getCSSSelector())){		
+			if (webElementPresent(cssPath)) {
 				sharePriceQuote = getWebElementText(cssPath);
+				System.out.println("Open:" + sharePriceQuote);
 				marketStatus = "Open";
 			}
-			else if (webElementPresent(marketClosedCSSSelectorPath)) {
-				sharePriceQuote = getWebElementText(marketClosedCSSSelectorPath);
+			else if (webElementPresent(InvestmentWebsiteCSSSelectorEnum.MARKETAFTERHOURS.getCSSSelector())) {
+				sharePriceQuote = getWebElementText(InvestmentWebsiteCSSSelectorEnum.MARKETAFTERHOURS.getCSSSelector());
+				System.out.println("After hours:" + sharePriceQuote);
+				marketStatus = "After hours";
+			}
+			else if (webElementPresent(InvestmentWebsiteCSSSelectorEnum.MARKETCLOSED.getCSSSelector())) {
+				sharePriceQuote = getWebElementText(InvestmentWebsiteCSSSelectorEnum.MARKETCLOSED.getCSSSelector());
+		//		sharePriceQuote = driver.findElement(By.cssSelector(marketClosedCSSSelectorPath)).getText().toString();
+				System.out.println("Closed:" + sharePriceQuote);
 				marketStatus = "Closed";
 			}
-			if (webElementPresent(currencyCSSSelectorPath)) {
-				shareCurrency = getWebElementText(currencyCSSSelectorPath);
+			if (webElementPresent(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTECURRENCY.getCSSSelector())) {
+				shareCurrency = getWebElementText(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTECURRENCY.getCSSSelector());
+				System.out.println("ShareCurrency:" + shareCurrency);
 			}
-			if (webElementPresent(shareQuoteDateTimeCSSSelectorPath)) {
-				shareQuoteDate = getWebElementText(shareQuoteDateTimeCSSSelectorPath);
+			if (webElementPresent(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTEDATETIME.getCSSSelector())) {
+				shareQuoteDate = getWebElementText(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTEDATETIME.getCSSSelector());
+				if (shareQuoteDate.equals("null")||shareQuoteDate.isEmpty())
+				{
+					LocalDate dateNow = LocalDate.now();
+					System.out.println("Retrieved Share Quote Date substitution Date:"+ dateNow.toString());
+					shareQuoteDate = dateNow.toString();
+				}
 			}
-			new WriteToFile(dataStorageFileNameType).writeDataToFile(shareName + " | Quote Price: "+ shareCurrency + sharePriceQuote +" | Quote date: " + shareQuoteDate + " | Market Status: " + marketStatus);
-			
-			retrievedData[0] = sharePriceQuote;
-			retrievedData[1] = shareQuoteDate;
-			retrievedData[2] = marketStatus;
-			retrievedData[3] = shareCurrency;
-		
+			new WriteToFile(dataStorageFileNameType).writeDataToFile(shareName + QuoteDescriptorEnum.QUOTETAG.getTagText() +/*" | Quote Price: "+*/ shareCurrency + sharePriceQuote + QuoteDescriptorEnum.QUOTEDATETAG.getTagText()/*" | Quote date: "*/ + shareQuoteDate + QuoteDescriptorEnum.MARKETSTATUSTAG.getTagText() /*+ " | Market Status: "*/ + marketStatus);
+	/*		
+			retrievedWebData[0] = sharePriceQuote;
+			retrievedWebData[1] = shareQuoteDate;
+			retrievedWebData[2] = marketStatus;
+			retrievedWebData[3] = shareCurrency;	
+		*/	
+			retrievedWebData.put("unit_price",addRetrievedWebDatatoList("unit_price",sharePriceQuote));
+			retrievedWebData.put("quote_date",addRetrievedWebDatatoList("quote_date",shareQuoteDate));
+			retrievedWebData.put("stock_exchange",addRetrievedWebDatatoList("stock_exchange",marketStatus));
+			retrievedWebData.put("currency_unit",addRetrievedWebDatatoList("currency_unit",shareCurrency));
 		}
-		return retrievedData;
+		return retrievedWebData /*retrievedWebData*/;
 	}
 	
+	private List<String> addRetrievedWebDatatoList(String dataFieldName,String dataFieldValue)
+	{
+		List<String> data = new ArrayList<String>();
+		data.add(dataFieldName);
+		data.add(dataFieldValue);
+		return data;
+	}
+		
 	public boolean webElementPresent(String cssSelectorPath) {
 		if (this.driver.findElements(By.cssSelector(cssSelectorPath)).size()!=0) {
 			return true;
@@ -72,7 +103,7 @@ public class WebDataMarketWatchShareQuotation {
 	
 	public String getWebElementText(String cssSelectorPath) {
 		String elementText = null;
-		elementText = driver.findElement(By.cssSelector(cssSelectorPath)).getText();
+		elementText = driver.findElement(By.cssSelector(cssSelectorPath)).getText().toString();
 		if (elementText.equalsIgnoreCase(null)) {
 			elementText = missingData;
 		}

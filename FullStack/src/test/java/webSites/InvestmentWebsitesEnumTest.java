@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class InvestmentWebsitesEnumTest {
@@ -23,6 +24,7 @@ class InvestmentWebsitesEnumTest {
 	}
 
 	@Test
+	@DisplayName("Test: InvestmentWebsitesEnum keys not null, not empty")
 	void testKeyNotNullNorEmpty() {
 		for(InvestmentWebsitesEnum test: InvestmentWebsitesEnum.values()) {
 //			assertNotEquals (test.getKey(),null, test.name()+ " key is null");			
@@ -34,6 +36,7 @@ class InvestmentWebsitesEnumTest {
 	}
 
 	@Test
+	@DisplayName("Test: InvestmentWebsitesEnum no duplicate keys present")
 	void testNoDuplicateKey() {
 		List<Integer> keys = new ArrayList<Integer>();	
 		for(InvestmentWebsitesEnum test: InvestmentWebsitesEnum.values()) {
@@ -46,6 +49,7 @@ class InvestmentWebsitesEnumTest {
 	}
 	
 	@Test
+	@DisplayName("Test: InvestmentWebsitesEnum share names not null, not empty")
 	void testShareNameNotNullNorEmpty() {
 		for(InvestmentWebsitesEnum test: InvestmentWebsitesEnum.values()) {
 			assertAll("Sharename contains a string",
@@ -56,11 +60,12 @@ class InvestmentWebsitesEnumTest {
 	}
 	
 	@Test
+	@DisplayName("Test: InvestmentWebsitesEnum web URL's not null, not empty")
 	void testWebURLNotNullNorEmpty() {
 		for(InvestmentWebsitesEnum test: InvestmentWebsitesEnum.values()) {
 			assertAll("Sharename contains a string",
-					()->assertNotEquals(test.getWebURL(),null, test.name()+ "web url is null"),
-					()->assertNotEquals(test.getWebURL(),"",test.name() + "web url string is empty")
+					()->assertNotEquals(test.getShareURL(),null, test.name()+ "web url is null"),
+					()->assertNotEquals(test.getShareURL(),"",test.name() + "web url string is empty")
 					);
 		}
 	}	
