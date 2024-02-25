@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -46,6 +47,9 @@ class AgilentQuoteDataStorageTest {
 		
 		dailySharePriceData = new AgilentWebQuoteDataCollection();
 		retrievedWebData = dailySharePriceData.getWebData("Chrome");
+	//	retrievedWebData.clear();
+	//	retrievedWebData  = new HashMap<String, List<String>>();
+		Assert.assertFalse(retrievedWebData.isEmpty());
 		System.out.println("Retrieved Web Data: " + retrievedWebData.toString());
 		
 	}
