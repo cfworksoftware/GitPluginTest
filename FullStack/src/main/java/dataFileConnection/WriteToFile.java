@@ -22,6 +22,7 @@ public class WriteToFile {
 	        myWriter.write(data);
 	        myWriter.write(System.lineSeparator());
 	        myWriter.close();
+
 	        System.out.println("Successfully wrote to the file: {" + data +"}");
 	      } catch (IOException e) {
 	        System.out.println("An error occurred.");

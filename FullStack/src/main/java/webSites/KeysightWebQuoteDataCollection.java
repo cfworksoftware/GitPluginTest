@@ -30,17 +30,18 @@ public class KeysightWebQuoteDataCollection {
 	HashMap<String, List<String>> retrievedWebData  = new HashMap<String, List<String>>();
 	
 	WebDriver driver = null;
-	ConfigureSeleniumBrowserDriver newBrowserDriver = new ConfigureSeleniumBrowserDriver();
+	ConfigureSeleniumBrowserDriver newBrowserDriver = new ConfigureSeleniumBrowserDriver("Chrome");
 	
 	public HashMap<String, List<String>> /*String[]*/  getWebData(String browserName) {
 	
 		if (browserName.equals("Chrome")) {
-			newBrowserDriver.getChromeDriver();
-			newBrowserDriver.maximiseWindow();
+	//		newBrowserDriver.getChromeDriver();
+	//		newBrowserDriver.maximiseWindow();
 			driver = newBrowserDriver.getChromeDriver();
 		}
 		if (driver !=null) {
-			newBrowserDriver.setDriverURL(/*keysightURL*/Keysight.getShareURL());			
+			newBrowserDriver.setDriverURL(/*keysightURL*/Keysight.getShareURL());
+			newBrowserDriver.setZoomLevel();
 		//	retrievedStockData = findStockNameElementTextByCSSSelector(driver, stockPriceQuoteCSSSelectorPath, stockName);
 			WebDataMarketWatchShareQuotation keysightWebData = new WebDataMarketWatchShareQuotation();
 //			DatabaseOperations writeKeysightData = new DatabaseOperations();

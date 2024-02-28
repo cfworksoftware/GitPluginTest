@@ -24,17 +24,18 @@ public class OrangeWebQuoteDataCollection {
 	HashMap<String, List<String>> retrievedWebData  = new HashMap<String, List<String>>();
 	
 	WebDriver driver = null;
-	ConfigureSeleniumBrowserDriver newBrowserDriver = new ConfigureSeleniumBrowserDriver();
+	ConfigureSeleniumBrowserDriver newBrowserDriver = new ConfigureSeleniumBrowserDriver("Chrome");
 	
 	public HashMap<String, List<String>> /*String[]*/  getWebData(String browserName) {
 	
 		if (browserName.equals("Chrome")) {
-			newBrowserDriver.getChromeDriver();
-			newBrowserDriver.maximiseWindow();
+	//		newBrowserDriver.getChromeDriver();
+	//		newBrowserDriver.maximiseWindow();
 			driver = newBrowserDriver.getChromeDriver();
 		}
 		if (driver !=null) {
 			newBrowserDriver.setDriverURL(/*orangeURL*/OrangeSA.getShareURL());
+			newBrowserDriver.setZoomLevel();
 			WebDataMarketWatchShareQuotation orangeWebData = new WebDataMarketWatchShareQuotation();
 			retrievedWebData = orangeWebData.getFinancialWebsiteShareQuote(driver, /*sharePriceQuoteCSSSelectorPath*/
 					OrangeSA.getWebsiteCSSSelector(InvestmentWebsiteCSSSelectorEnum.SHAREPRICEQUOTE),/*orangeName*/

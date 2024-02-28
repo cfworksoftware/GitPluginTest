@@ -1,14 +1,24 @@
 package webSites;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.Keys;
 
 import dataFileConnection.WriteToFile;
+import dataFormatting.DateFormat;
 
 
 public class WebDataMarketWatchShareQuotation {
@@ -40,38 +50,112 @@ public class WebDataMarketWatchShareQuotation {
 		HashMap<String, List<String>> retrievedWebData = new HashMap<String, List<String>>();
 		//String[] retrievedWebData = new String [4];
 		this.driver = driver;
-
+/*
+		if (webElementPresent(cssPath)) {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+		       js.executeScript("window.scrollBy(0,350)", "");
+		}
+		*/
+/*		WebElement revealed = driver.findElement(By.cssSelector(cssPath));
+		
+	//    Wait<WebDriver> wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+	    
+	    Wait<WebDriver> wait =
+	            new FluentWait<>(driver)
+	                .withTimeout(Duration.ofSeconds(10))
+	                .pollingEvery(Duration.ofMillis(100))
+	                .ignoring(ElementNotInteractableException.class);
+	    
+	    wait.until(d -> revealed.isDisplayed());
+*/
 		if (cssPath.contains(InvestmentWebsiteCSSSelectorEnum.INTRADAYCSSTAG.getCSSSelector())){		
 			if (webElementPresent(cssPath)) {
-				sharePriceQuote = getWebElementText(cssPath);
-				System.out.println("Open:" + sharePriceQuote);
+				if (driver.findElement(By.cssSelector(InvestmentWebsiteCSSSelectorEnum.INTRADAYCSSTAG.getCSSSelector())).isDisplayed()) { 
+				System.out.println("Intraday present");
+//				driver.findElement(By.cssSelector(cssPath)).sendKeys(Keys.CONTROL,Keys.SUBTRACT);
+					sharePriceQuote = getVisibleWebElementText(cssPath);
+					System.out.println("Intraday visible");
+				}
+				else {
+					sharePriceQuote = getInVisibleWebElementText(cssPath);
+					System.out.println("Intraday invisible");
+				}
+//				System.out.println("Default status Open: cssPath: " + cssPath +", Share price quote: "+ sharePriceQuote);
 				marketStatus = "Open";
 			}
-			else if (webElementPresent(InvestmentWebsiteCSSSelectorEnum.MARKETAFTERHOURS.getCSSSelector())) {
-				sharePriceQuote = getWebElementText(InvestmentWebsiteCSSSelectorEnum.MARKETAFTERHOURS.getCSSSelector());
+			if (webElementPresent(InvestmentWebsiteCSSSelectorEnum.MARKETAFTERHOURS.getCSSSelector())) {
+				sharePriceQuote = null;
+				System.out.println("After hours present");
+				if (driver.findElement(By.cssSelector(InvestmentWebsiteCSSSelectorEnum.MARKETAFTERHOURS.getCSSSelector())).isDisplayed()) { 
+		//		driver.findElement(By.cssSelector(cssPath)).sendKeys(Keys.CONTROL,Keys.SUBTRACT);
+				sharePriceQuote = getVisibleWebElementText(InvestmentWebsiteCSSSelectorEnum.MARKETAFTERHOURS.getCSSSelector());
+				System.out.println("After hours visible");
+				}
+				else {
+					sharePriceQuote = getInVisibleWebElementText(InvestmentWebsiteCSSSelectorEnum.MARKETAFTERHOURS.getCSSSelector());
+					System.out.println("After hours invisible");
+				}
 				System.out.println("After hours:" + sharePriceQuote);
 				marketStatus = "After hours";
 			}
 			else if (webElementPresent(InvestmentWebsiteCSSSelectorEnum.MARKETCLOSED.getCSSSelector())) {
-				sharePriceQuote = getWebElementText(InvestmentWebsiteCSSSelectorEnum.MARKETCLOSED.getCSSSelector());
+				System.out.println("Closed present");
+		//		driver.findElement(By.cssSelector(InvestmentWebsiteCSSSelectorEnum.MARKETCLOSED.getCSSSelector())).sendKeys(Keys.CONTROL,Keys.SUBTRACT);
+				sharePriceQuote = null;
+				if (driver.findElement(By.cssSelector(InvestmentWebsiteCSSSelectorEnum.MARKETCLOSED.getCSSSelector())).isDisplayed()) { 
+					sharePriceQuote = getVisibleWebElementText(InvestmentWebsiteCSSSelectorEnum.MARKETCLOSED.getCSSSelector());
+					System.out.println("Closed visible");
+				}
+				else {
+					sharePriceQuote = getInVisibleWebElementText(InvestmentWebsiteCSSSelectorEnum.MARKETCLOSED.getCSSSelector());
+					System.out.println("Closed invisible");
+				}
 		//		sharePriceQuote = driver.findElement(By.cssSelector(marketClosedCSSSelectorPath)).getText().toString();
 				System.out.println("Closed:" + sharePriceQuote);
 				marketStatus = "Closed";
 			}
 			if (webElementPresent(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTECURRENCY.getCSSSelector())) {
-				shareCurrency = getWebElementText(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTECURRENCY.getCSSSelector());
+				System.out.println("Currency present");
+				if (driver.findElement(By.cssSelector(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTECURRENCY.getCSSSelector())).isDisplayed()) 
+				{
+		//		driver.findElement(By.cssSelector(cssPath)).sendKeys(Keys.CONTROL,Keys.SUBTRACT);
+					shareCurrency = getVisibleWebElementText(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTECURRENCY.getCSSSelector());
+					System.out.println("Currency visible");
+				}
+				else {
+					shareCurrency = getInVisibleWebElementText(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTECURRENCY.getCSSSelector());
+					System.out.println("Currency invisible");
+				}
 				System.out.println("ShareCurrency:" + shareCurrency);
 			}
 			if (webElementPresent(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTEDATETIME.getCSSSelector())) {
-				shareQuoteDate = getWebElementText(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTEDATETIME.getCSSSelector());
-				if (shareQuoteDate.equals("null")||shareQuoteDate.isEmpty())
+				System.out.println("Share date present");
+			//	driver.findElement(By.cssSelector(cssPath)).sendKeys(Keys.CONTROL,Keys.SUBTRACT);
+			//	System.out.println("Share date present");
+				if (driver.findElement(By.cssSelector(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTEDATETIME.getCSSSelector())).isDisplayed())
 				{
-					LocalDate dateNow = LocalDate.now();
-					System.out.println("Retrieved Share Quote Date substitution Date:"+ dateNow.toString());
-					shareQuoteDate = dateNow.toString();
+					System.out.println("Share date displayed");
+					shareQuoteDate = getVisibleWebElementText(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTEDATETIME.getCSSSelector());			
+					if ((shareQuoteDate == null)||(shareQuoteDate.isEmpty()))
+					{
+						LocalDate dateNow = LocalDate.now();
+						System.out.println("Retrieved Share Quote Date substitution Date:"+ dateNow.toString());
+						shareQuoteDate = dateNow.toString();
+					}
+				}
+				else {
+					shareQuoteDate = getInVisibleWebElementText(InvestmentWebsiteCSSSelectorEnum.SHAREQUOTEDATETIME.getCSSSelector());
+					DateFormat newDateFormat = new DateFormat();
+					shareQuoteDate = newDateFormat.formatDate(shareQuoteDate);
+					System.out.println("Element not visible");
 				}
 			}
-			new WriteToFile(dataStorageFileNameType).writeDataToFile(shareName + QuoteDescriptorEnum.QUOTETAG.getTagText() +/*" | Quote Price: "+*/ shareCurrency + sharePriceQuote + QuoteDescriptorEnum.QUOTEDATETAG.getTagText()/*" | Quote date: "*/ + shareQuoteDate + QuoteDescriptorEnum.MARKETSTATUSTAG.getTagText() /*+ " | Market Status: "*/ + marketStatus);
+			
+			new WriteToFile(dataStorageFileNameType).writeDataToFile(shareName + QuoteDescriptorEnum.QUOTETAG.getTagText() 
+			+/*" | Quote Price: "+*/ shareCurrency + sharePriceQuote 
+			+ QuoteDescriptorEnum.QUOTEDATETAG.getTagText()/*" | Quote date: "*/ + shareQuoteDate 
+			+ QuoteDescriptorEnum.MARKETSTATUSTAG.getTagText() /*+ " | Market Status: "*/ + marketStatus);
+			
 	/*		
 			retrievedWebData[0] = sharePriceQuote;
 			retrievedWebData[1] = shareQuoteDate;
@@ -101,16 +185,27 @@ public class WebDataMarketWatchShareQuotation {
 		return false;
 	}
 	
-	public String getWebElementText(String cssSelectorPath) {
+	public String getVisibleWebElementText(String cssSelectorPath) {
 		String elementText = null;
-		elementText = driver.findElement(By.cssSelector(cssSelectorPath)).getText().toString();
-		if (elementText.equalsIgnoreCase(null)) {
+		elementText = driver.findElement(By.cssSelector(cssSelectorPath)).getText();
+		System.out.println("Element text: "+elementText);
+		if ((elementText == null) ||(elementText.isEmpty())) {
+			System.out.println("Element text not found: found-> " + driver.findElement(By.cssSelector(cssSelectorPath)).getText().toString());
 			elementText = missingData;
 		}
 		return elementText;
 	}
 	
-
+	public String getInVisibleWebElementText(String cssSelectorPath) {
+		String elementText = null;
+		elementText = driver.findElement(By.cssSelector(cssSelectorPath)).getAttribute("textContent");
+		System.out.println("Element text: "+elementText);
+		if ((elementText == null) ||(elementText.isEmpty())) {
+			System.out.println("Element text not found: found-> " + driver.findElement(By.cssSelector(cssSelectorPath)).getText().toString());
+			elementText = missingData;
+		}
+		return elementText;
+	}
 	
 	
 }

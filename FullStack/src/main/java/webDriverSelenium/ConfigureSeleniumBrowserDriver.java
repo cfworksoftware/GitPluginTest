@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
@@ -16,12 +17,20 @@ public class ConfigureSeleniumBrowserDriver {
 	private String driverLocation = "C:\\Users\\colinf\\Documents\\SoftwareProgramming\\ANewMaterial\\Selenium\\chromedriver_win32\\chromedriver.exe";
 //	private String driverLocation = "C:\\Users\\colinf\\Documents\\SoftwareProgramming\\ANewMaterial\\Selenium\\chromedriver_win64\\chromedriver.exe";
 	private WebDriver driver = null;
+	private String browserName;
 	
 	public ConfigureSeleniumBrowserDriver() {
-		System.setProperty(driverBrowserType, driverLocation); 
-		
+		System.setProperty(driverBrowserType, driverLocation); 	
 	}
 
+	public ConfigureSeleniumBrowserDriver(String browserName) {
+		System.setProperty(driverBrowserType, driverLocation); 
+		if (browserName.equals("Chrome")) {
+			driver = getChromeDriver();
+			maximiseWindow();
+		}
+	}
+	
 	
 	public ConfigureSeleniumBrowserDriver(String driverBrowserType, String driverLocation) {
 		this.driverBrowserType = driverBrowserType;
@@ -75,6 +84,11 @@ public class ConfigureSeleniumBrowserDriver {
 	public void setBrowserSize(int x, int y) {
 		Dimension newDimension = new Dimension(x, y);
 		driver.manage().window().setSize(newDimension);
+	}
+	
+	public void setZoomLevel() {
+		JavascriptExecutor jse = (JavascriptExecutor)driver;
+		jse.executeScript("document.body.style.zoom = '70%';");
 	}
 	
 	public String getBrowserURL() {
