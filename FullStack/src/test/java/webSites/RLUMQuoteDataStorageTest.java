@@ -49,7 +49,7 @@ class RLUMQuoteDataStorageTest {
 		WebDataDailyFinancialQuoteRetrieval rlumQuote = new WebDataDailyFinancialQuoteRetrieval("Chrome");
 		retrievedWebData = rlumQuote.getWebRLUMData(InvestmentWebsitesEnum.RLUM);
 		System.out.println("Retrieved Web Data: " + retrievedWebData.toString());
-//		databaseOperations = new DatabaseOperations();
-//		databaseOperations.insertDataToDatabase(databaseName, tableName, primaryKeyName, expectedCurrencySymbol, /*databaseShareFieldNames,*/ retrievedWebData);
+	//	databaseOperations = new DatabaseOperations();
+	//	databaseOperations.insertDataToDatabase(databaseName, tableName, primaryKeyName, expectedCurrencySymbol, /*databaseShareFieldNames,*/ retrievedWebData);
 	}
 }

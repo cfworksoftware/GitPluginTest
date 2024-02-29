@@ -81,25 +81,18 @@ class OrangeQuoteDataStorageTest {
 		DatabaseOperations databaseOperations;
 		
 	//	String[] databaseFieldNames = {"unit_price","quote_date","stock_exchange","currency_unit"};
-	//	String[] retrievedWebData = new String[4];
-		
 		HashMap<String, List<String>> retrievedWebData  = new HashMap<String, List<String>>();
-					
-	//	String databaseName = "accounting";
-	//	String tableName = "webdata_orangesa_quote"; 
 		String expectedCurrencySymbol = "€";
-	//	String expectedCurrencySymbol = "€";
 		String primaryKeyName = "quote_date";
 		
 		HashMap<String, String> databaseFieldNames = DatabaseTableFieldNamesEnum.TableFieldNames.getDatabaseShareFieldNames();
-//		String[] databaseFieldNames = DatabaseTableFieldNamesEnum.TableFieldNames.getDatabaseShareFieldNames();
 		String databaseName = DatabaseNameEnum.FINANCIALDATABASE.getDatabaseName();
 		String tableName = DatabaseTableNamesEnum.ORANGESA.getDatabaseTableName(); 
 		
 		dailyStockPriceData = new OrangeWebQuoteDataCollection();
 		retrievedWebData = dailyStockPriceData.getWebData("Chrome");
 		databaseOperations = new DatabaseOperations();
-		databaseOperations.insertDataToDatabase(databaseName, tableName, primaryKeyName, expectedCurrencySymbol, /*databaseFieldNames,*/ retrievedWebData);
+		databaseOperations.insertDataToDatabase(databaseName, tableName, primaryKeyName, expectedCurrencySymbol,retrievedWebData);
 	
 	}
 

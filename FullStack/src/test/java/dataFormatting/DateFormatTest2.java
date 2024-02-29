@@ -30,7 +30,7 @@ class DateFormatTest2 {
 	void testFormatDate() {
 		
 		DateFormat test = new DateFormat();
-		System.out.println("Date format test: "+test.formatDate("Feb 28, 2024 1:59 p.m."));
+		System.out.println("Date format test: "+test.formatDateCommaSeperated("Feb 28, 2024 1:59 p.m."));
 		
 		fail("Not yet implemented"); // TODO
 	}

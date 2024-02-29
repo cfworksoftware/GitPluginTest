@@ -64,7 +64,6 @@ class KeysightQuoteDataStorageTest {
 	public static boolean containsWords(String inputString, String[] items) {
 	    boolean found = false;
 	    for (String item : items) {
-	  //  	System.out.println("item: " + item.toString());
 	        if (inputString.contains(item)) {
 	            found = true;
 	            break;
@@ -82,19 +81,13 @@ class KeysightQuoteDataStorageTest {
 		DatabaseOperations databaseOperations;
 		
 		//String[] databaseFieldNames = {"unit_price","quote_date","stock_exchange","currency_unit"};
-//		String[] retrievedWebData = new String[4];
 		HashMap<String, List<String>> retrievedWebData  = new HashMap<String, List<String>>();
 		
 		HashMap<String, String> databaseFieldNames = DatabaseTableFieldNamesEnum.TableFieldNames.getDatabaseShareFieldNames();
-//		String[] databaseFieldNames = DatabaseTableFieldNamesEnum.TableFieldNames.getDatabaseShareFieldNames();
 		String databaseName = DatabaseNameEnum.FINANCIALDATABASE.getDatabaseName();
 		String tableName = DatabaseTableNamesEnum.KEYSIGHT.getDatabaseTableName(); 
-		
-		
-	//	String databaseName = "accounting";
-	//	String tableName = "webdata_keysight_quote"; 
+
 		String expectedCurrencySymbol = InvestmentWebsitesEnum.KEYSIGHT.getCurrency();
-	//	String expectedCurrencySymbol = "$";
 		String primaryKeyName = "quote_date";
 		
 		dailyStockPriceData = new KeysightWebQuoteDataCollection();
@@ -103,12 +96,9 @@ class KeysightQuoteDataStorageTest {
 		System.out.println("retrievedstockdata: " + retrievedWebData.get(0).get(1) + ";"
 		+ retrievedWebData.get(1).get(1) + ";" + retrievedWebData.get(2).get(1) + ";" 
 				+ retrievedWebData.get(3).get(1) + ";");
-		
-//		System.out.println("retrievedstockdata: " + retrievedWebData[0] + ";"
-//		+ retrievedWebData[1] + ";" + retrievedWebData[2] + ";" + retrievedWebData[3] + ";");
-		databaseOperations = new DatabaseOperations();
-		
-		databaseOperations.insertDataToDatabase(databaseName, tableName, primaryKeyName, expectedCurrencySymbol, /*databaseFieldNames,*/ retrievedWebData);
+
+		databaseOperations = new DatabaseOperations();	
+		databaseOperations.insertDataToDatabase(databaseName, tableName, primaryKeyName, expectedCurrencySymbol, retrievedWebData);
 	}
 
 }

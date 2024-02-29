@@ -46,8 +46,7 @@ class AgilentQuoteDataStorageTest {
 		
 		dailySharePriceData = new AgilentWebQuoteDataCollection();
 		retrievedWebData = dailySharePriceData.getWebData("Chrome");
-	//	retrievedWebData.clear();
-	//	retrievedWebData  = new HashMap<String, List<String>>();
+
 		Assert.assertFalse(retrievedWebData.isEmpty());
 		System.out.println("Retrieved Web Data: " + retrievedWebData.toString());
 		System.out.println("Market status: " + retrievedWebData.get("stock_exchange").get(1).toString());
@@ -63,7 +62,6 @@ class AgilentQuoteDataStorageTest {
 	public static boolean containsWords(String inputString, String[] items) {
 	    boolean found = false;
 	    for (String item : items) {
-	  //  	System.out.println("item: " + item.toString());
 	        if (inputString.contains(item)) {
 	            found = true;
 	            break;
@@ -81,23 +79,18 @@ class AgilentQuoteDataStorageTest {
 		DatabaseOperations databaseOperations;
 		
 //		String[] databaseFieldNames = {"unit_price","quote_date","stock_exchange","currency_unit"};
-//		String[] retrievedWebData = new String[4];
 		HashMap<String, List<String>> retrievedWebData  = new HashMap<String, List<String>>();
 		
 		HashMap<String, String> databaseFieldNames = DatabaseTableFieldNamesEnum.TableFieldNames.getDatabaseShareFieldNames();
-//		String[] databaseFieldNames = DatabaseTableFieldNamesEnum.TableFieldNames.getDatabaseShareFieldNames();
 		String databaseName = DatabaseNameEnum.FINANCIALDATABASE.getDatabaseName();
 		String tableName = DatabaseTableNamesEnum.AGILENT.getDatabaseTableName(); 
 		
-//		String databaseName = "accounting";
-//		String tableName = "webdata_agilent_quote"; 
-//		String expectedCurrencySymbol = "$";
 		String expectedCurrencySymbol = InvestmentWebsitesEnum.AGILENT.getCurrency();
 		String primaryKeyName = "quote_date";
 		
 		dailySharePriceData = new AgilentWebQuoteDataCollection();
 		retrievedWebData = dailySharePriceData.getWebData("Chrome");
 		databaseOperations = new DatabaseOperations();
-		databaseOperations.insertDataToDatabase(databaseName, tableName, primaryKeyName, expectedCurrencySymbol, /*databaseFieldNames,*/ retrievedWebData);	
+		databaseOperations.insertDataToDatabase(databaseName, tableName, primaryKeyName, expectedCurrencySymbol,retrievedWebData);	
 	}
 }
