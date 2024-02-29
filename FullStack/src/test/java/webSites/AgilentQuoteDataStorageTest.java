@@ -72,7 +72,6 @@ class AgilentQuoteDataStorageTest {
 	    return found;
 	}
 	
-	
 	//@Test
 	//@DisplayName("Test: Agilent Web Share Data sent to Database")
 	void testSendStockDataToDatabase() {
@@ -99,8 +98,6 @@ class AgilentQuoteDataStorageTest {
 		dailySharePriceData = new AgilentWebQuoteDataCollection();
 		retrievedWebData = dailySharePriceData.getWebData("Chrome");
 		databaseOperations = new DatabaseOperations();
-		databaseOperations.insertDataToDatabase(databaseName, tableName, primaryKeyName, expectedCurrencySymbol, /*databaseFieldNames,*/ retrievedWebData);
-	
+		databaseOperations.insertDataToDatabase(databaseName, tableName, primaryKeyName, expectedCurrencySymbol, /*databaseFieldNames,*/ retrievedWebData);	
 	}
-
 }
