@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterAll;
 //import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -51,9 +52,10 @@ class ConfigureSeleniumBrowserDriverTest {
 	}
 	
 	@Test
+	@DisplayName("Test chrome driver location and clear webdriver")
 	@Order(1)
 	void testConfigureSeleniumBrowserDriver() {
-		System.out.println("displayName = " + testInfo.getDisplayName());
+//		System.out.println("displayName = " + testInfo.getDisplayName());
 		String Key = "webdriver.chrome.driver";
 		String expectedDefinition = "C:\\Users\\colinf\\Documents\\SoftwareProgramming\\ANewMaterial\\Selenium\\chromedriver_win32\\chromedriver.exe";
 		String driverLocation = System.getProperty(Key);
@@ -65,9 +67,10 @@ class ConfigureSeleniumBrowserDriverTest {
 	}
 
 	@Test
+	@DisplayName("Test firefox driver location and clear webdriver")
 	@Order(2)
 	void testConfigureSeleniumBrowserDriverStringString() {
-		System.out.println("displayName = " + testInfo.getDisplayName());
+	//	System.out.println("displayName = " + testInfo.getDisplayName());
 		String newDriverKey = "webdriver.firefox.driver";
 	//	String newDriverLocation = "C:\\Users\\colinf\\Documents\\SoftwareProgramming\\ANewMaterial\\Selenium\\firefox_win32\\firefoxdriver.exe";
 		String expectedDriverLocation = "C:\\Users\\colinf\\Documents\\SoftwareProgramming\\ANewMaterial\\Selenium\\firefox_win32\\firefoxdriver.exe";;
@@ -82,9 +85,10 @@ class ConfigureSeleniumBrowserDriverTest {
 
 	@Test
 	@Tag("UnitTest")
+	@DisplayName("Test webdriver using chromedriver")
 	@Order(3)
 	void testGetChromeDriver() {
-		System.out.println("displayName = " + testInfo.getDisplayName());
+	//	System.out.println("displayName = " + testInfo.getDisplayName());
 		assertEquals(sourceDriver.getChromeDriver(),driver,"different drivers");
 		assertAll("drivers identities",
 				()->assertNotEquals(sourceDriver.getChromeDriver(),null,"different drivers"),
@@ -101,9 +105,10 @@ class ConfigureSeleniumBrowserDriverTest {
 	}
 
 	@Test
+	@DisplayName("Test setting browser URL")
 	@Order(4)
 	void testSetDriverURL() throws InterruptedException {
-		System.out.println("displayName = " + testInfo.getDisplayName());
+//		System.out.println("displayName = " + testInfo.getDisplayName());
 		String webURL =  "https://www.google.com/";
 		String checkWebURL = "https://www.google.com/"; //
 		if (driver !=null) {
@@ -114,9 +119,10 @@ class ConfigureSeleniumBrowserDriverTest {
 	}
 
 	@Test
+	@DisplayName("Test maximise browser window")
 	@Order(5)
 	void testMaximiseWindow() {
-		System.out.println("displayName = " + testInfo.getDisplayName());
+	//	System.out.println("displayName = " + testInfo.getDisplayName());
 		driver.manage().window().maximize();
 
 		int driverWindowHeight = driver.manage().window().getSize().getHeight();
@@ -163,9 +169,10 @@ class ConfigureSeleniumBrowserDriverTest {
 	}
 */
 	@Test
+	@DisplayName("Test browser size control")
 	@Order(6)
 	void testSetBrowserSizeIntInt() {
-		System.out.println("displayName = " + testInfo.getDisplayName());
+	//	System.out.println("displayName = " + testInfo.getDisplayName());
 		sourceDriver.setBrowserSize(500,500);
 		int driverWindowHeight = driver.manage().window().getSize().getHeight();
 		int driverWindowWdth = driver.manage().window().getSize().getWidth();
@@ -181,9 +188,10 @@ class ConfigureSeleniumBrowserDriverTest {
 	}
 
 	@Test
+	@DisplayName("Test quit driver instance")
 	@Order(8)
 	void testQuitDriverInstance() {
-		System.out.println("displayName = " + testInfo.getDisplayName());
+//		System.out.println("displayName = " + testInfo.getDisplayName());
 		String sessionId = ((RemoteWebDriver) driver).getSessionId().toString();
 		assertNotNull(sessionId,"Session Id is null");
 		sourceDriver.quitDriverInstance();

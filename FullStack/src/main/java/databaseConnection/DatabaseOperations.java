@@ -43,7 +43,7 @@ public class DatabaseOperations {
 			connObj = dataSource.getConnection();
 			if (tableName.equals(DatabaseTableNamesEnum.RLUM.getDatabaseTableName() /*"webdata_rlumuk_growthincome_quote"*/))
 			{
-				formattedDate = dateFormatter.formatDate(databaseFields.get("quote_date").get(1)/*databaseFieldValues[1]*/);
+				formattedDate = dateFormatter.formatDateCommaSeperated(databaseFields.get("quote_date").get(1)/*databaseFieldValues[1]*/);
 			}
 			else 
 			{
@@ -343,11 +343,11 @@ public class DatabaseOperations {
 		String unitValue = "XX";
 		String nullString = "null";
 		if (tableName.equals(DatabaseTableNamesEnum.RLUM.getDatabaseTableName() /*"webdata_rlumuk_growthincome_quote"*/)) {
-		int currencyIndex = retrievedWebData.get("quote_price").indexOf(expectedCurrencySymbol);
-		unitValue = retrievedWebData.get("quote_price").get(1).substring(0, currencyIndex);
-		retrievedWebData.put("quote_price",addRetrievedWebDatatoList("quote_price",unitValue));
-		retrievedWebData.put("currency_unit",addRetrievedWebDatatoList("currency_unit",retrievedWebData.get("quote_price").get(1).substring(currencyIndex)));
-		
+//		int currencyIndex = retrievedWebData.get("quote_price").indexOf(expectedCurrencySymbol);
+//		unitValue = retrievedWebData.get("quote_price").get(1).substring(0, currencyIndex);
+//		retrievedWebData.put("quote_price",addRetrievedWebDatatoList("quote_price",unitValue));
+//		retrievedWebData.put("currency_unit",addRetrievedWebDatatoList("currency_unit",retrievedWebData.get("quote_price").get(1).substring(currencyIndex)));
+//		
 		/*
 			int currencyIndex = dataValueColumn[0].indexOf(expectedCurrencySymbol);
 			unitValue = dataValueColumn[0].substring(0, currencyIndex);

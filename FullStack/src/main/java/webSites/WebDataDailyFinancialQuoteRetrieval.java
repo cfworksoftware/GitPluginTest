@@ -17,6 +17,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import dataFormatting.DateFormat;
 import webDriverSelenium.ConfigureSeleniumBrowserDriver;
 
 public class WebDataDailyFinancialQuoteRetrieval {
@@ -191,10 +192,10 @@ public class WebDataDailyFinancialQuoteRetrieval {
 			for (WebElement row : rows) {
 				System.out.println("List item " + cnt++ +" :"+ row.getText());
 			} */
-//			int cnt =0;
+	//		int cnt =0;
 			for (WebElement row : rows) 
 			{
-//				System.out.println("List item " + cnt++ +" :"+ row.getText());
+	//			System.out.println("List item " + cnt++ +" :"+ row.getText());
 				if ((row.getText()).contains("Royal London UK Income With Growth Trust Inc")) {
 			    	fundRow = row;
 			        break;	
@@ -206,15 +207,26 @@ public class WebDataDailyFinancialQuoteRetrieval {
 				int colcnt =0;
 				for (WebElement column : columns) 
 				{	
-	//				System.out.println("List column " + colcnt +" :"+ column.getText());
+					System.out.println("List column " + colcnt +" :"+ column.getText());
 	//				retrievedWebData[colcnt++] = column.getText().toString();
 					rlumWebData[colcnt++] = column.getText().toString();
-				}
-				
+				}				
+				String newDateFormat = (new DateFormat()).formatDateTwoDigitMonth(rlumWebData[1]);
+				System.out.println("new Date Format: "+ newDateFormat);
 				retrievedWebData.put("unit_price",addRetrievedWebDatatoList("unit_price",rlumWebData[0]));
-				retrievedWebData.put("quote_date",addRetrievedWebDatatoList("quote_date",rlumWebData[1]));
+				retrievedWebData.put("quote_date",addRetrievedWebDatatoList("quote_date",newDateFormat));
 				retrievedWebData.put("stock_exchange",addRetrievedWebDatatoList("stock_exchange",rlumWebData[2]));
-	//			retrievedWebData.put("currency_unit",addRetrievedWebDatatoList("currency_unit",shareCurrency));
+				System.out.println("unit_price" + rlumWebData[0]);
+				System.out.println("currency" + InvestmentWebsitesEnum.RLUM.getCurrency().toString());
+			//int currencyIndex = retrievedWebData.get("unit_price").get(1).indexOf('p'); 
+				int currencyIndex = retrievedWebData.get("unit_price").get(1).indexOf(InvestmentWebsitesEnum.RLUM.getCurrency().toString());
+				System.out.println("currency index" + currencyIndex );
+				String unitValue = retrievedWebData.get("unit_price").get(1).substring(0, currencyIndex);
+				String currencyFound = retrievedWebData.get("unit_price").get(1).substring(currencyIndex,7);
+				System.out.println("unit value" + unitValue );
+				retrievedWebData.put("unit_price",addRetrievedWebDatatoList("unit_price",unitValue));
+				retrievedWebData.put("currency_unit",addRetrievedWebDatatoList("currency_unit",currencyFound));
+			//	retrievedWebData.put("currency_unit",addRetrievedWebDatatoList("currency_unit",rlumWebData[3]));
 			}
 			newBrowserDriver.quitDriverInstance();	
 		}

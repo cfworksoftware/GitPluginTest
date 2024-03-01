@@ -36,7 +36,7 @@ class AgilentQuoteDataStorageTest {
 	@Test
 	@DisplayName("Test: Agilent Web Share Data fetched From Browser")
 	void testShareDataFetchedFromBrowser() {
-		
+		 
 		AgilentWebQuoteDataCollection dailySharePriceData;
 
 		HashMap<String, List<String>> retrievedWebData  = new HashMap<String, List<String>>();
@@ -65,7 +65,7 @@ class AgilentQuoteDataStorageTest {
 	        if (inputString.contains(item)) {
 	            found = true;
 	            break;
-	        }
+	        } 
 	    }
 	    return found;
 	}

@@ -63,7 +63,7 @@ class InvestmentWebsitesEnumTest {
 	@DisplayName("Test: InvestmentWebsitesEnum web URL's not null, not empty")
 	void testWebURLNotNullNorEmpty() {
 		for(InvestmentWebsitesEnum test: InvestmentWebsitesEnum.values()) {
-			assertAll("Sharename contains a string",
+			assertAll("URL contains a string",
 					()->assertNotEquals(test.getShareURL(),null, test.name()+ "web url is null"),
 					()->assertNotEquals(test.getShareURL(),"",test.name() + "web url string is empty")
 					);

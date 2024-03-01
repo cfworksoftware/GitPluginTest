@@ -5,8 +5,6 @@ public enum QuoteDescriptorEnum {
     QUOTETAG(1,"Quote", " | Quote Price: "), 
     QUOTEDATETAG(2, "Date", " | Quote date: "), 
     MARKETSTATUSTAG(3,"Market status", " | Market Status: ");
-
-//	shareName + " | Quote Price: "+ shareCurrency + sharePriceQuote +" | Quote date: " + shareQuoteDate + " | Market Status: " + marketStatus
 	
     private final Integer key;
     private final String tagName;

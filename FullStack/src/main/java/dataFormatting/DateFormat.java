@@ -2,23 +2,23 @@ package dataFormatting;
 
 public class DateFormat {
 
-	public String formatDate(String currentDateForm) {
+	public String formatDateCommaSeperated(String currentDateForm) {
 		String[] arrOfStr = null; 
 		String formattedDate = null;
 		if (currentDateForm.contains(",")){
 			arrOfStr = currentDateForm.split(", ", 2); 
-			System.out.println("Date split: " + arrOfStr[0] + " : " + arrOfStr[1]);
+	//		System.out.println("Date split: " + arrOfStr[0] + " : " + arrOfStr[1]);
 		}
 		String year = arrOfStr[1].split(" ")[0];
 		String month = convertMonthtoInteger(arrOfStr[0].split(" ")[0]);
 		String day = arrOfStr[0].split(" ")[1];
 		
 		formattedDate = year + "-" + month + "-" + day;
-		System.out.println("Formatted Date: " + formattedDate);
+//		System.out.println("Formatted Date: " + formattedDate);
 		return formattedDate;
 	}
-/*	
-    public String formatDate(String currentDateForm) {
+	
+    public String formatDateTwoDigitMonth(String currentDateForm) {
 		//Assume date is in either DD/MM/YYYY or American system with spaces MMM DD YYYY need to convert to YYYY-MM-DD
 		String[] arrOfStr = null; 
 		String formattedDate = null;
@@ -26,7 +26,7 @@ public class DateFormat {
 			arrOfStr = currentDateForm.split("/", 3);  	//		System.out.println("Identified date format with '/'");
 			formattedDate = arrOfStr[2] + "-" + arrOfStr[1]+ "-" + arrOfStr[0];
 		}
-		else if (currentDateForm.contains(" ")){
+/*		else if (currentDateForm.contains(" ")){
 			arrOfStr = currentDateForm.split(" ", 8);  	//		System.out.println("Identified date format with spaces");
 			String monthCnt = null;
 			switch(arrOfStr[2])
@@ -72,11 +72,11 @@ public class DateFormat {
 				break;
 			}
 			formattedDate = arrOfStr[4]+ "-" + monthCnt + "-" + arrOfStr[3].replace(",", "");			
-		}
-		System.out.println("Format Date:" + formattedDate);
+		}*/
+	//	System.out.println("Format Date:" + formattedDate);
 		return formattedDate;
 		}	
-		*/
+		
 	public String convertMonthtoInteger(String threeLetterMonth) {
 		String monthCnt;
 		switch(threeLetterMonth)

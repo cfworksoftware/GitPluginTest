@@ -5,9 +5,8 @@ public class ShareClass {
 	private String currency;
 	private String shareName;
 	private String shareURL;
-//	private InvestmentWebsiteCSSSelectorEnum investmentWebsite;
 	
-	ShareClass(InvestmentWebsitesEnum name/*, InvestmentWebsiteCSSSelectorEnum cssSelector*/){
+	ShareClass(InvestmentWebsitesEnum name){
 		shareName = name.getShareName();
 		shareURL = name.getShareURL();
 		currency = name.getCurrency();

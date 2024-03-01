@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -38,17 +39,19 @@ class ConfigureDatabaseConnectionPoolTest {
 	 * Test method for {@link webdriverSelenium.ConfigureDatabaseConnectionPool#setUpPool()}.
 	 */
 	@Test
+	@DisplayName("Test: ConfigureDatabaseConnectionPool")
 	@Order(1)
 	void testGetInstance() {
-		System.out.println("displayName = " + testInfo.getDisplayName());
+	//	System.out.println("displayName = " + testInfo.getDisplayName());
 		ConfigureDatabaseConnectionPool single_instance = ConfigureDatabaseConnectionPool.getInstance();
 		assertNotEquals(null,single_instance,"single_instance un-instantiated");
 	}
 	
 	@Test
+	@DisplayName("Test connection pool maximum active size")
 	@Order(2)
 	void testSetUpPool() {
-		System.out.println("displayName = " + testInfo.getDisplayName());
+	//	System.out.println("displayName = " + testInfo.getDisplayName());
 		try {
 			DataSource dataSource = ConfigureDatabaseConnectionPool.setUpPool();
 			int poolSize = ConfigureDatabaseConnectionPool.getConnectionPool().getMaxActive();	
@@ -63,10 +66,11 @@ class ConfigureDatabaseConnectionPoolTest {
 	 * Test method for {@link webdriverSelenium.ConfigureDatabaseConnectionPool#closePool()}.
 	 */
 	@Test
+	@DisplayName("Test connection pool for 1 used connections")	
 	@Order(5)
 	void testClosePool() {
 
-		System.out.println("displayName = " + testInfo.getDisplayName());
+//		System.out.println("displayName = " + testInfo.getDisplayName());
 		try {
 			DataSource dataSource = ConfigureDatabaseConnectionPool.setUpPool();
 			Connection connObj = dataSource.getConnection();
@@ -84,9 +88,10 @@ class ConfigureDatabaseConnectionPoolTest {
 	 * Test method for {@link webdriverSelenium.ConfigureDatabaseConnectionPool#getConnectionPool()}.
 	 */
 	@Test
+	@DisplayName("Test connection pool has unused connections")
 	@Order(3)
 	void testGetConnectionPool() {
-		System.out.println("displayName = " + testInfo.getDisplayName());
+//		System.out.println("displayName = " + testInfo.getDisplayName());
 		try {
 			DataSource dataSource = ConfigureDatabaseConnectionPool.setUpPool();
 			int usedPoolConnections = ConfigureDatabaseConnectionPool.getConnectionPool().getNumActive();
@@ -101,10 +106,11 @@ class ConfigureDatabaseConnectionPoolTest {
 	 * Test method for {@link webdriverSelenium.ConfigureDatabaseConnectionPool#printConnectionPoolStatus()}.
 	 */
 	@Test
+	@DisplayName("Test print connection pool status")
 	@Order(4)
 	@StdIo
 	void testPrintConnectionPoolStatus(StdOut out) {
-		System.out.println("displayName = " + testInfo.getDisplayName());
+//		System.out.println("displayName = " + testInfo.getDisplayName());
 		try {
 			ConfigureDatabaseConnectionPool single_instance = ConfigureDatabaseConnectionPool.getInstance();
 			DataSource dataSource= ConfigureDatabaseConnectionPool.setUpPool();
