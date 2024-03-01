@@ -56,8 +56,7 @@ class DatabaseTableFieldNamesEnumTest {
 		}
 	    assertEquals(foundNullEmptyValue, 0,"Null or Empty value found");	
 	}
-	
-	
+
 	@Test
 	@DisplayName("Test: GetDatabaseShareFieldNames duplicate values present")
 	void testNoDuplicateValuesGetDatabaseShareFieldNames() {
@@ -83,8 +82,7 @@ class DatabaseTableFieldNamesEnumTest {
 		}
 	    assertEquals(foundNullEmptyValue, 0,"Null or Empty value found");	
 	}
-	
-	
+
 	@Test
 	@DisplayName("Test: GetDatabaseEuroExchangeRateFieldNames duplicate values present")
 	void testNoDuplicateValuesGetDatabaseEuroExchangeRateFieldNames() {
