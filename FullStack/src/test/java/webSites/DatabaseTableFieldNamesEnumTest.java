@@ -52,7 +52,7 @@ class DatabaseTableFieldNamesEnumTest {
 		}
 		if (values.contains(null)||values.contains(""))
 		{
-			foundNullEmptyValue =1;
+			foundNullEmptyValue = 1;
 		}
 	    assertEquals(foundNullEmptyValue, 0,"Null or Empty value found");	
 	}
@@ -78,7 +78,7 @@ class DatabaseTableFieldNamesEnumTest {
 		}
 		if (values.contains(null)||values.contains(""))
 		{
-			foundNullEmptyValue =1;
+			foundNullEmptyValue = 1;
 		}
 	    assertEquals(foundNullEmptyValue, 0,"Null or Empty value found");	
 	}
@@ -104,7 +104,7 @@ class DatabaseTableFieldNamesEnumTest {
 		}
 		if (values.contains(null)||values.contains(""))
 		{
-			foundNullEmptyValue =1;
+			foundNullEmptyValue = 1;
 		}
 	    assertEquals(foundNullEmptyValue, 0,"Null or Empty value found");	
 	}
