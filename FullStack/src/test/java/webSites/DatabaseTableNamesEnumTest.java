@@ -48,10 +48,8 @@ class DatabaseTableNamesEnumTest {
 		List<Integer> keys = new ArrayList<Integer>();	
 		for(DatabaseTableNamesEnum test: DatabaseTableNamesEnum.values()) {
 			keys.add(test.getKey());
-//			System.out.println(keys);
 		}
 	    List<Integer> duplicates = listDuplicateUsingCollectionsFrequency(keys);
-//	    System.out.println(duplicates);
 	    assertEquals(duplicates.size(), 0,"Duplicate key found");	
 	}
 		
